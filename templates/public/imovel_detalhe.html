@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-7">
+        {% set fotos = imovel["fotos"].split(",") if imovel["fotos"] else [] %}
+        {% if fotos %}
+        <img src="{{ fotos[0] }}" class="img-fluid rounded shadow-sm mb-3" alt="{{ imovel['titulo'] }}">
+        <div class="row g-2">
+            {% for foto in fotos[1:4] %}
+            <div class="col-4">
+                <img src="{{ foto }}" class="img-fluid rounded" alt="{{ imovel['titulo'] }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-md-5">
+        <h1 class="h3">{{ imovel["titulo"] }}</h1>
+        <p class="text-muted">{{ imovel["localizacao"] }}</p>
+        <p class="fw-bold fs-4">{{ imovel["preco"]|brl }}</p>
+        <ul class="list-group mb-3">
+            <li class="list-group-item">Tipo: {{ imovel["tipo"] }}</li>
+            <li class="list-group-item">Categoria: {{ imovel["categoria"] }}</li>
+            <li class="list-group-item">Área: {{ imovel["area"] }} m²</li>
+            <li class="list-group-item">Dormitórios: {{ imovel["dormitorios"] }}</li>
+            <li class="list-group-item">Banheiros: {{ imovel["banheiros"] }}</li>
+            <li class="list-group-item">Vagas: {{ imovel["vagas"] }}</li>
+            <li class="list-group-item">Suítes: {{ imovel["suites"] }}</li>
+        </ul>
+        {% if imovel["tour360_url"] %}
+        <a href="{{ imovel['tour360_url'] }}" target="_blank" class="btn btn-outline-dark mb-3">Tour virtual 360°</a>
+        {% endif %}
+        {% if whatsapp_link %}
+        <div class="mt-2">
+            <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-primary w-100">Falar com o corretor sobre este imóvel</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-4">
+    <h2 class="h5">Descrição</h2>
+    <p>{{ imovel["descricao"] }}</p>
+    {% if imovel["caracteristicas"] %}
+    <h3 class="h6">Características</h3>
+    <p>{{ imovel["caracteristicas"] }}</p>
+    {% endif %}
+</div>
+{% endblock %}

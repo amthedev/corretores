@@ -1,0 +1,21 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+<h1 class="h3 mb-3">Configurações gerais</h1>
+
+<form method="post" class="card card-body">
+    <div class="row g-3">
+        <div class="col-md-4"><label class="form-label">Nome do site</label><input name="site_nome" class="form-control" value="{{ config['site_nome'] }}"></div>
+        <div class="col-md-4"><label class="form-label">CRECI</label><input name="creci" class="form-control" value="{{ config['creci'] }}"></div>
+        <div class="col-md-4"><label class="form-label">Telefone</label><input name="telefone" class="form-control" value="{{ config['telefone'] }}"></div>
+        <div class="col-md-4"><label class="form-label">Telefone secundário</label><input name="telefone_secundario" class="form-control" value="{{ config['telefone_secundario'] }}"></div>
+        <div class="col-md-4"><label class="form-label">E-mail contato</label><input name="email_contato" class="form-control" value="{{ config['email_contato'] }}"></div>
+        <div class="col-md-4"><label class="form-label">WhatsApp</label><input name="whatsapp" class="form-control" value="{{ config['whatsapp'] }}"></div>
+        <div class="col-md-4"><label class="form-label">Instagram</label><input name="instagram" class="form-control" value="{{ config['instagram'] }}"></div>
+        <div class="col-md-4"><label class="form-label">Facebook</label><input name="facebook" class="form-control" value="{{ config['facebook'] }}"></div>
+        <div class="col-md-6"><label class="form-label">Endereço</label><input name="endereco" class="form-control" value="{{ config['endereco'] }}"></div>
+        <div class="col-md-6"><label class="form-label">SEO título</label><input name="seo_title" class="form-control" value="{{ config['seo_title'] }}"></div>
+        <div class="col-12"><label class="form-label">SEO descrição</label><textarea name="seo_description" class="form-control" rows="3">{{ config['seo_description'] }}</textarea></div>
+    </div>
+    <div class="mt-3"><button class="btn btn-success">Salvar configurações</button></div>
+</form>
+{% endblock %}

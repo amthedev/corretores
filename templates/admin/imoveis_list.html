@@ -1,0 +1,47 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 m-0">Imóveis</h1>
+    <a href="{{ url_for('admin_imovel_novo') }}" class="btn btn-primary">Novo imóvel</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered bg-white">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Seção</th>
+                <th>Estado</th>
+                <th>Localização</th>
+                <th>Preço</th>
+                <th>Categoria</th>
+                <th>Ativo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in imoveis %}
+            <tr>
+                <td>{{ item["id"] }}</td>
+                <td>{{ item["titulo"] }}</td>
+                <td>{{ item["secao"] }}</td>
+                <td>{{ item["estado"] or "-" }}</td>
+                <td>{{ item["localizacao"] }}</td>
+                <td>{{ item["preco"]|brl }}</td>
+                <td>{{ item["categoria"] }}</td>
+                <td>{{ "Sim" if item["ativo"] else "Não" }}</td>
+                <td>
+                    <a href="{{ url_for('admin_imovel_editar', imovel_id=item['id']) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <form class="d-inline" method="post" action="{{ url_for('admin_imovel_excluir', imovel_id=item['id']) }}" onsubmit="return confirm('Excluir imóvel?');">
+                        <button class="btn btn-sm btn-outline-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="9" class="text-center">Nenhum imóvel cadastrado.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

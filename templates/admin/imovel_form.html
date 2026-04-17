@@ -1,0 +1,79 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+<h1 class="h3 mb-3">{{ "Novo imóvel" if modo == "novo" else "Editar imóvel" }}</h1>
+
+<form method="post" class="card card-body">
+    <div class="row g-3">
+        <div class="col-md-8">
+            <label class="form-label">Título *</label>
+            <input name="titulo" class="form-control" value="{{ imovel.get('titulo', '') if imovel.get else imovel['titulo'] if imovel else '' }}" required>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Localização *</label>
+            <input name="localizacao" class="form-control" value="{{ imovel.get('localizacao', '') if imovel.get else imovel['localizacao'] if imovel else '' }}" required>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Estado (UF)</label>
+            <input name="estado" class="form-control" maxlength="2" value="{{ imovel.get('estado', '') if imovel.get else imovel['estado'] if imovel else '' }}" placeholder="Ex: SP">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Seção *</label>
+            <select name="secao" class="form-select" required>
+                {% set secao_atual = (imovel.get('secao', 'Residencial') if imovel.get else imovel['secao'] if imovel else 'Residencial') %}
+                {% for secao in secoes %}
+                <option value="{{ secao }}" {% if secao_atual == secao %}selected{% endif %}>{{ secao }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Tipo *</label>
+            <input name="tipo" class="form-control" value="{{ imovel.get('tipo', '') if imovel.get else imovel['tipo'] if imovel else '' }}" required>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Categoria *</label>
+            <input name="categoria" class="form-control" value="{{ imovel.get('categoria', '') if imovel.get else imovel['categoria'] if imovel else '' }}" required>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Preço</label>
+            <input type="number" step="0.01" name="preco" class="form-control" value="{{ imovel.get('preco', 0) if imovel.get else imovel['preco'] if imovel else 0 }}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Área (m²)</label>
+            <input type="number" step="0.01" name="area" class="form-control" value="{{ imovel.get('area', 0) if imovel.get else imovel['area'] if imovel else 0 }}">
+        </div>
+        <div class="col-md-2"><label class="form-label">Dormitórios</label><input type="number" name="dormitorios" class="form-control" value="{{ imovel.get('dormitorios', 0) if imovel.get else imovel['dormitorios'] if imovel else 0 }}"></div>
+        <div class="col-md-2"><label class="form-label">Banheiros</label><input type="number" name="banheiros" class="form-control" value="{{ imovel.get('banheiros', 0) if imovel.get else imovel['banheiros'] if imovel else 0 }}"></div>
+        <div class="col-md-2"><label class="form-label">Vagas</label><input type="number" name="vagas" class="form-control" value="{{ imovel.get('vagas', 0) if imovel.get else imovel['vagas'] if imovel else 0 }}"></div>
+        <div class="col-md-2"><label class="form-label">Suítes</label><input type="number" name="suites" class="form-control" value="{{ imovel.get('suites', 0) if imovel.get else imovel['suites'] if imovel else 0 }}"></div>
+        <div class="col-md-4">
+            <label class="form-label">Características (separadas por vírgula)</label>
+            <input name="caracteristicas" class="form-control" value="{{ imovel.get('caracteristicas', '') if imovel.get else imovel['caracteristicas'] if imovel else '' }}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">URL do Tour 360°</label>
+            <input name="tour360_url" class="form-control" value="{{ imovel.get('tour360_url', '') if imovel.get else imovel['tour360_url'] if imovel else '' }}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">URLs de fotos (separadas por vírgula)</label>
+            <input name="fotos" class="form-control" value="{{ imovel.get('fotos', '') if imovel.get else imovel['fotos'] if imovel else '' }}">
+        </div>
+        <div class="col-md-2 form-check ms-2">
+            <input type="checkbox" name="destaque" class="form-check-input" {% if (imovel.get('destaque',0) if imovel.get else imovel['destaque'] if imovel else 0) %}checked{% endif %}>
+            <label class="form-check-label">Destaque</label>
+        </div>
+        <div class="col-md-2 form-check ms-2">
+            <input type="checkbox" name="ativo" class="form-check-input" {% if (imovel.get('ativo',1) if imovel.get else imovel['ativo'] if imovel else 1) %}checked{% endif %}>
+            <label class="form-check-label">Ativo</label>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Descrição</label>
+            <textarea name="descricao" rows="4" class="form-control">{{ imovel.get('descricao', '') if imovel.get else imovel['descricao'] if imovel else '' }}</textarea>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <button class="btn btn-success">Salvar</button>
+        <a href="{{ url_for('admin_imoveis') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

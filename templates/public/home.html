@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 bg-white rounded-3 shadow-sm">
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <img src="{{ url_for('logo_carlos') }}" alt="Logo {{ site_nome }}" class="site-logo site-logo-hero">
+        <div>
+            <div class="fw-semibold">{{ site_nome }}</div>
+            <div class="text-muted small">{{ creci }}</div>
+        </div>
+    </div>
+    <h1 class="display-6">Encontre seu próximo imóvel</h1>
+    <p class="lead">Busca rápida por compra, locação, lançamento e permuta.</p>
+    <form method="get" action="{{ url_for('imoveis') }}" class="card card-body mb-3 quick-filter-card">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label mb-1">Cidade</label>
+                <select name="cidade" class="form-select">
+                    <option value="">Todas as cidades</option>
+                    {% for cidade in cidades %}
+                    <option value="{{ cidade }}">{{ cidade }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label mb-1">Estado</label>
+                <select name="estado" class="form-select">
+                    <option value="">UF</option>
+                    {% for estado in estados %}
+                    <option value="{{ estado }}">{{ estado }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">Buscar</button>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ url_for('imoveis') }}" class="btn btn-outline-primary w-100">Limpar</a>
+            </div>
+        </div>
+    </form>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{{ url_for('imoveis') }}" class="btn btn-primary">Ver imóveis</a>
+        <a href="{{ url_for('imoveis', visual='lista') }}" class="btn btn-outline-primary">Ver tudo</a>
+        <a href="{{ url_for('quero_um_site_assim') }}" class="btn btn-outline-primary">Quero um site assim</a>
+    </div>
+</div>
+
+<h2 class="h4 mb-3">Imóveis por seção</h2>
+<div class="section-columns mb-4">
+    {% for secao_nome, itens_secao in secoes_home.items() %}
+    <div class="section-column card">
+        <div class="section-column-header d-flex justify-content-between align-items-center">
+            <h3 class="h6 m-0">{{ secao_nome }}</h3>
+            <a href="{{ url_for('imoveis', secao=secao_nome) }}" class="small">Ver todos</a>
+        </div>
+        <div class="section-column-body">
+            {% for item in itens_secao %}
+            <div class="section-property d-flex gap-2">
+                {% set foto = (item['fotos'].split(',')[0] if item['fotos'] else '') %}
+                {% if foto %}
+                <img src="{{ foto }}" class="section-property-thumb" alt="{{ item['titulo'] }}">
+                {% endif %}
+                <div class="flex-grow-1">
+                    <div class="small fw-semibold">{{ item["titulo"] }}</div>
+                    <div class="small text-muted">{{ item["localizacao"] }}</div>
+                    <div class="small fw-bold">{{ item["preco"]|brl }}</div>
+                    <a href="{{ url_for('imovel_detalhe', imovel_id=item['id']) }}" class="btn btn-outline-primary btn-sm mt-1">Detalhes</a>
+                </div>
+            </div>
+            {% else %}
+            <p class="small text-muted mb-0">Nenhum imóvel nesta seção.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <h3 class="h5 mb-1">Atendimento rápido no WhatsApp</h3>
+                <p class="text-muted mb-3">Preencha o formulário e confirme para falar direto com o corretor.</p>
+                <form method="post" action="{{ url_for('salvar_lead') }}">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de atendimento</label>
+                            <select name="tipo" class="form-select" required>
+                                <option value="comprar_imovel">Comprar imóvel</option>
+                                <option value="anuncie_seu_imovel">Anuncie seu imóvel</option>
+                                <option value="quero_site_assim">Quero um site assim</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nome</label>
+                            <input name="nome" class="form-control" placeholder="Seu nome" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Telefone</label>
+                            <input name="telefone" class="form-control" placeholder="(11) 99999-9999">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">E-mail</label>
+                            <input name="email" class="form-control" placeholder="voce@email.com">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Imóvel para falar (opcional)</label>
+                            <select name="imovel_id" class="form-select">
+                                <option value="">Nao tenho um imovel especifico</option>
+                                {% for item in imoveis_para_contato %}
+                                <option value="{{ item['id'] }}">
+                                    #{{ item["id"] }} - {{ item["titulo"] }} ({{ item["localizacao"] }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Tipo do imóvel</label>
+                            <input name="imovel_interesse" class="form-control" placeholder="Apartamento, casa, comercial...">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Mensagem</label>
+                            <textarea name="mensagem" class="form-control" rows="4" placeholder="Descreva o que busca, faixa de valor e região."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100">Confirmar e ir para o WhatsApp</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

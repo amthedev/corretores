@@ -1,0 +1,24 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+<h1 class="h3 mb-3">Conteúdo do site</h1>
+
+<form method="get" class="mb-3">
+    <div class="input-group" style="max-width: 450px;">
+        <label class="input-group-text">Seção</label>
+        <select name="key" class="form-select" onchange="this.form.submit()">
+            {% for key in allowed_keys %}
+            <option value="{{ key }}" {% if selected == key %}selected{% endif %}>{{ key }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+<form method="post" class="card card-body">
+    <input type="hidden" name="key" value="{{ selected }}">
+    <label class="form-label">Texto da seção</label>
+    <textarea name="value" rows="14" class="form-control">{{ value }}</textarea>
+    <div class="mt-3">
+        <button class="btn btn-success">Salvar conteúdo</button>
+    </div>
+</form>
+{% endblock %}

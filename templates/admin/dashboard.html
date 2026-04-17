@@ -1,0 +1,48 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+<h1 class="h3 mb-4">Dashboard</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card card-body"><strong>Total de imóveis</strong><span class="fs-4">{{ total_imoveis }}</span></div></div>
+    <div class="col-md-3"><div class="card card-body"><strong>Total de leads</strong><span class="fs-4">{{ total_leads }}</span></div></div>
+    <div class="col-md-3"><div class="card card-body"><strong>Leads novos</strong><span class="fs-4">{{ novos_leads }}</span></div></div>
+    <div class="col-md-3"><div class="card card-body"><strong>Conversão simples</strong><span class="fs-4">{{ ((total_leads / total_imoveis * 100) if total_imoveis else 0)|round(1) }}%</span></div></div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Imóveis mais vistos</div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for item in top_imoveis %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>{{ item["titulo"] }}</span>
+                        <strong>{{ item["visualizacoes"] }}</strong>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Sem dados ainda.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Últimos leads</div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for lead in ultimos_leads %}
+                    <li class="list-group-item">
+                        <strong>{{ lead["nome"] }}</strong> - {{ lead["tipo"] }}<br>
+                        <span class="text-muted small">{{ lead["status"] }} | {{ lead["created_at"][:16].replace('T',' ') }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Nenhum lead.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

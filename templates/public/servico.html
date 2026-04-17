@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="bg-white p-4 rounded shadow-sm mb-3">
+    <h1 class="h3">{{ titulo }}</h1>
+    <p class="mb-0" style="white-space: pre-wrap;">{{ conteudo }}</p>
+</div>
+
+<div class="card card-body">
+    <h2 class="h5">Enviar solicitação</h2>
+    <form method="post" action="{{ url_for('salvar_lead') }}">
+        <input type="hidden" name="tipo" value="{{ slug }}">
+        <div class="row g-2">
+            <div class="col-md-6"><input name="nome" class="form-control" placeholder="Nome" required></div>
+            <div class="col-md-3"><input name="email" class="form-control" placeholder="E-mail"></div>
+            <div class="col-md-3"><input name="telefone" class="form-control" placeholder="Telefone"></div>
+            <div class="col-12"><input name="imovel_interesse" class="form-control" placeholder="Imóvel de interesse (opcional)"></div>
+            <div class="col-12"><textarea name="mensagem" rows="4" class="form-control" placeholder="Mensagem"></textarea></div>
+            <div class="col-12"><button class="btn btn-primary">Enviar</button></div>
+        </div>
+    </form>
+</div>
+{% endblock %}

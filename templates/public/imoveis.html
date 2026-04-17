@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-3">Busca de imóveis</h1>
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a href="{{ url_for('imoveis', visual='carrossel') }}" class="btn btn-sm {% if visual == 'carrossel' %}btn-primary{% else %}btn-outline-primary{% endif %}">Carrossel mobile</a>
+    <a href="{{ url_for('imoveis', visual='lista') }}" class="btn btn-sm {% if visual == 'lista' %}btn-primary{% else %}btn-outline-primary{% endif %}">Ver tudo</a>
+</div>
+<form method="get" class="card card-body mb-4">
+    <input type="hidden" name="visual" value="{{ visual }}">
+    <div class="row g-2">
+        <div class="col-md-3">
+            <select name="cidade" class="form-select">
+                <option value="">Cidade</option>
+                {% for cidade in cidades %}
+                <option value="{{ cidade }}" {% if request.args.get('cidade','') == cidade %}selected{% endif %}>{{ cidade }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="estado" class="form-select">
+                <option value="">Estado</option>
+                {% for estado in estados %}
+                <option value="{{ estado }}" {% if request.args.get('estado','') == estado %}selected{% endif %}>{{ estado }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2"><input name="localizacao" value="{{ request.args.get('localizacao','') }}" class="form-control" placeholder="Bairro/Região"></div>
+        <div class="col-md-2">
+            <select name="secao" class="form-select">
+                <option value="">Seção</option>
+                {% for secao in secoes %}
+                <option value="{{ secao }}" {% if request.args.get('secao','') == secao %}selected{% endif %}>{{ secao }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2"><input name="tipo" value="{{ request.args.get('tipo','') }}" class="form-control" placeholder="Tipo"></div>
+        <div class="col-md-2"><input name="categoria" value="{{ request.args.get('categoria','') }}" class="form-control" placeholder="Categoria"></div>
+        <div class="col-md-1"><button class="btn btn-primary w-100">Filtrar</button></div>
+        <div class="col-md-2"><input name="preco_min" value="{{ request.args.get('preco_min','') }}" class="form-control" placeholder="Preço min"></div>
+        <div class="col-md-2"><input name="preco_max" value="{{ request.args.get('preco_max','') }}" class="form-control" placeholder="Preço max"></div>
+        <div class="col-md-2"><input name="area_min" value="{{ request.args.get('area_min','') }}" class="form-control" placeholder="Área min"></div>
+        <div class="col-md-2"><input name="dormitorios" value="{{ request.args.get('dormitorios','') }}" class="form-control" placeholder="Dormitórios"></div>
+        <div class="col-md-2"><input name="vagas" value="{{ request.args.get('vagas','') }}" class="form-control" placeholder="Vagas"></div>
+        <div class="col-md-2"><input name="banheiros" value="{{ request.args.get('banheiros','') }}" class="form-control" placeholder="Banheiros"></div>
+        <div class="col-md-2"><input name="suites" value="{{ request.args.get('suites','') }}" class="form-control" placeholder="Suítes"></div>
+        <div class="col-md-2"><input name="caracteristica" value="{{ request.args.get('caracteristica','') }}" class="form-control" placeholder="Característica"></div>
+    </div>
+</form>
+
+<div class="row g-3 {% if visual == 'carrossel' %}properties-grid{% else %}properties-list-compact{% endif %}">
+    {% for item in imoveis %}
+    <div class="col-md-4 property-item {% if visual == 'lista' %}property-item-compact{% endif %}">
+        <div class="card h-100 shadow-sm property-card">
+            {% set foto = (item['fotos'].split(',')[0] if item['fotos'] else '') %}
+            {% if foto %}
+            <img src="{{ foto }}" class="card-img-top property-thumb" style="height: 210px; object-fit: cover;" alt="{{ item['titulo'] }}">
+            {% endif %}
+            <div class="card-body">
+                <h2 class="h6">{{ item["titulo"] }}</h2>
+                <p class="mb-1">{{ item["localizacao"] }}</p>
+                <p class="mb-1">{{ item["tipo"] }} | {{ item["categoria"] }}</p>
+                <p class="fw-bold">{{ item["preco"]|brl }}</p>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('imovel_detalhe', imovel_id=item['id']) }}" class="btn btn-outline-primary btn-sm">Ver imóvel</a>
+                    {% if item["whatsapp_link"] %}
+                    <a href="{{ item['whatsapp_link'] }}" target="_blank" class="btn btn-primary btn-sm">Falar com o corretor</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Nenhum imóvel encontrado para os filtros informados.</p>
+    {% endfor %}
+</div>
+{% endblock %}

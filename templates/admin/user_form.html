@@ -1,0 +1,21 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+<h1 class="h3 mb-3">Novo usuário</h1>
+<form method="post" class="card card-body" style="max-width: 600px;">
+    <label class="form-label">Nome</label>
+    <input name="nome" class="form-control mb-2" required>
+    <label class="form-label">E-mail</label>
+    <input type="email" name="email" class="form-control mb-2" required>
+    <label class="form-label">Senha</label>
+    <input type="password" name="senha" class="form-control mb-2" required>
+    <label class="form-label">Perfil</label>
+    <select name="role" class="form-select mb-3">
+        <option value="editor">Editor</option>
+        <option value="admin">Admin</option>
+    </select>
+    <div>
+        <button class="btn btn-success">Criar usuário</button>
+        <a href="{{ url_for('admin_usuarios') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
