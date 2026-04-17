@@ -640,8 +640,9 @@ def salvar_lead():
     )
 
     tipo_label = {
-        "anuncie_seu_imovel": "Anuncie seu imovel",
+        "anuncie_seu_imovel": "Anunciar meu imovel",
         "comprar_imovel": "Comprar imovel",
+        "alugar_imovel": "Alugar imovel",
         "quero_site_assim": "Quero um site assim",
     }.get(tipo, "Contato geral")
 
