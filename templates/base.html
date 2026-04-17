@@ -1,115 +1,188 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site_nome }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ site_nome }} — Encontre os melhores imóveis. {{ creci }}">
+  <title>{{ site_nome }}</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
 </head>
 <body class="app-body">
-<nav class="navbar navbar-expand-lg premium-nav">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('home') }}">
-            <img src="{{ url_for('logo_carlos') }}" alt="Logo {{ site_nome }}" class="site-logo">
-            <span>{{ site_nome }}</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="menu">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Empresa</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('pagina_empresa', slug='quem-somos') }}">Quem somos</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('pagina_empresa', slug='politica-de-privacidade') }}">Política de Privacidade</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Serviços</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('servico', slug='comprar-imovel') }}">Comprar imóvel</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('servico', slug='anuncie-seu-imovel') }}">Anuncie seu imóvel</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('imoveis') }}">Imóveis</a></li>
-            </ul>
-            <div class="nav-contact small">
-                <span>{{ telefone }}</span>
-                {% if telefone_secundario %}
-                <span class="mx-2">•</span>
-                <span>{{ telefone_secundario }}</span>
-                {% endif %}
-                <span class="mx-2">•</span>
-                <span>{{ email_contato }}</span>
-            </div>
+
+<!-- ── Navbar ──────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg premium-nav" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('home') }}">
+      <img src="{{ url_for('logo_carlos') }}" alt="Logo {{ site_nome }}" class="site-logo">
+      <span>{{ site_nome }}</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Empresa</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('pagina_empresa', slug='quem-somos') }}">Quem somos</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pagina_empresa', slug='politica-de-privacidade') }}">Política de Privacidade</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Serviços</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('servico', slug='comprar-imovel') }}">
+              <span style="margin-right:6px">🏠</span> Comprar imóvel
+            </a></li>
+            <li><a class="dropdown-item" href="{{ url_for('servico', slug='anuncie-seu-imovel') }}">
+              <span style="margin-right:6px">📋</span> Anuncie seu imóvel
+            </a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('imoveis') }}">Imóveis</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="nav-contact d-none d-xl-flex">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"/>
+          </svg>
+          <span>{{ telefone }}</span>
+          {% if telefone_secundario %}<span>•</span><span>{{ telefone_secundario }}</span>{% endif %}
         </div>
+        <a href="{{ url_for('imoveis') }}" class="nav-cta d-none d-lg-inline-flex align-items-center gap-1">
+          Ver imóveis
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+        </a>
+      </div>
     </div>
+  </div>
 </nav>
 
-<main class="container py-5">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+<!-- ── Flash Messages ─────────────────────────────────── -->
+<div class="container pt-4" id="flash-container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
 
-    {% block content %}{% endblock %}
+<!-- ── Main Content ───────────────────────────────────── -->
+<main class="container py-4 pb-5">
+  {% block content %}{% endblock %}
 </main>
 
-<footer class="premium-footer py-5 mt-5">
-    <div class="container">
-        <div class="row g-4 align-items-start">
-            <div class="col-md-6">
-                <h5 class="footer-brand mb-2 d-flex align-items-center gap-2">
-                    <img src="{{ url_for('logo_carlos') }}" alt="Logo {{ site_nome }}" class="site-logo site-logo-footer">
-                    <span>{{ site_nome }}</span>
-                </h5>
-                <p class="footer-text mb-1">{{ creci }}</p>
-                <p class="footer-text mb-1">{{ telefone }}</p>
-                {% if telefone_secundario %}
-                <p class="footer-text mb-1">{{ telefone_secundario }}</p>
-                {% endif %}
-                <p class="footer-text mb-0">{{ email_contato }}</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <p class="footer-title mb-2">Atalhos</p>
-                <div class="d-flex flex-column gap-1 align-items-md-end">
-                    <a href="{{ url_for('imoveis') }}">Imóveis</a>
-                    <a href="{{ url_for('servico', slug='comprar-imovel') }}">Comprar imóvel</a>
-                    <a href="{{ url_for('servico', slug='anuncie-seu-imovel') }}">Anuncie seu imóvel</a>
-                    <a href="{{ url_for('quero_um_site_assim') }}">Quero um site assim</a>
-                </div>
-            </div>
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer class="premium-footer py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5 col-md-6">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <img src="{{ url_for('logo_carlos') }}" alt="Logo {{ site_nome }}" class="site-logo site-logo-footer">
+          <span class="footer-brand">{{ site_nome }}</span>
         </div>
-        <hr class="footer-line my-4">
-        <div class="d-flex justify-content-between flex-wrap gap-2">
-            <div class="d-flex gap-3">
-                {% if whatsapp %}<a href="{{ whatsapp }}" target="_blank">WhatsApp</a>{% endif %}
-                {% if instagram %}<a href="{{ instagram }}" target="_blank">Instagram</a>{% endif %}
-                {% if facebook %}<a href="{{ facebook }}" target="_blank">Facebook</a>{% endif %}
-            </div>
-            <small class="footer-copy">© {{ site_nome }}. Todos os direitos reservados.</small>
+        <p class="small mb-2" style="color:rgba(255,255,255,.5)">{{ creci }}</p>
+        <p class="small mb-1" style="color:rgba(255,255,255,.6)">{{ telefone }}</p>
+        {% if telefone_secundario %}<p class="small mb-1" style="color:rgba(255,255,255,.6)">{{ telefone_secundario }}</p>{% endif %}
+        <p class="small mb-3" style="color:rgba(255,255,255,.6)">{{ email_contato }}</p>
+        <div class="d-flex gap-2">
+          {% if whatsapp %}
+          <a href="{{ whatsapp }}" target="_blank" class="footer-social-link" title="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+            </svg>
+          </a>
+          {% endif %}
+          {% if instagram %}
+          <a href="{{ instagram }}" target="_blank" class="footer-social-link" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+            </svg>
+          </a>
+          {% endif %}
+          {% if facebook %}
+          <a href="{{ facebook }}" target="_blank" class="footer-social-link" title="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+            </svg>
+          </a>
+          {% endif %}
         </div>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2 offset-lg-1">
+        <p class="footer-title">Imóveis</p>
+        <div class="d-flex flex-column gap-2">
+          <a href="{{ url_for('imoveis') }}">Todos os imóveis</a>
+          <a href="{{ url_for('imoveis', secao='Residencial') }}">Residencial</a>
+          <a href="{{ url_for('imoveis', secao='Comercial') }}">Comercial</a>
+          <a href="{{ url_for('imoveis', secao='Terrenos & Rurais') }}">Terrenos</a>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <p class="footer-title">Serviços</p>
+        <div class="d-flex flex-column gap-2">
+          <a href="{{ url_for('servico', slug='comprar-imovel') }}">Comprar imóvel</a>
+          <a href="{{ url_for('servico', slug='anuncie-seu-imovel') }}">Anuncie seu imóvel</a>
+          <a href="{{ url_for('quero_um_site_assim') }}">Quero um site assim</a>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-2">
+        <p class="footer-title">Empresa</p>
+        <div class="d-flex flex-column gap-2">
+          <a href="{{ url_for('pagina_empresa', slug='quem-somos') }}">Quem somos</a>
+          <a href="{{ url_for('pagina_empresa', slug='politica-de-privacidade') }}">Privacidade</a>
+        </div>
+      </div>
     </div>
+
+    <hr class="footer-line my-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <small class="footer-copy">© {{ site_nome }}. Todos os direitos reservados.</small>
+      <small class="footer-copy">Desenvolvido com ♥ para corretores</small>
+    </div>
+  </div>
 </footer>
+
+<!-- ── WhatsApp Float ─────────────────────────────────── -->
 {% if whatsapp %}
 <a href="{{ whatsapp }}" target="_blank" class="whatsapp-float" aria-label="Falar no WhatsApp">
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-        <path fill="currentColor" d="M19.11 17.42c-.27-.14-1.58-.78-1.82-.87-.24-.09-.42-.14-.6.14-.18.27-.69.87-.85 1.05-.16.18-.31.2-.58.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.33-1.56-1.49-1.83-.16-.27-.02-.42.12-.56.12-.12.27-.31.4-.47.13-.16.18-.27.27-.45.09-.18.04-.34-.02-.47-.07-.14-.6-1.44-.82-1.98-.22-.52-.45-.45-.6-.46l-.51-.01c-.18 0-.47.07-.72.34-.25.27-.96.94-.96 2.29s.99 2.66 1.13 2.84c.14.18 1.94 2.96 4.7 4.15.66.29 1.18.46 1.58.59.66.21 1.26.18 1.73.11.53-.08 1.58-.65 1.8-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.32z"/>
-        <path fill="currentColor" d="M16.03 3.2c-7.03 0-12.74 5.71-12.74 12.74 0 2.23.58 4.4 1.68 6.31L3.2 28.8l6.72-1.76a12.7 12.7 0 0 0 6.11 1.56h.01c7.03 0 12.75-5.71 12.75-12.74S23.07 3.2 16.03 3.2zm0 23.2h-.01a10.4 10.4 0 0 1-5.31-1.45l-.38-.22-3.99 1.05 1.06-3.89-.25-.4a10.45 10.45 0 1 1 8.88 4.91z"/>
-    </svg>
+  <svg viewBox="0 0 32 32" aria-hidden="true">
+    <path fill="currentColor" d="M19.11 17.42c-.27-.14-1.58-.78-1.82-.87-.24-.09-.42-.14-.6.14-.18.27-.69.87-.85 1.05-.16.18-.31.2-.58.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.33-1.56-1.49-1.83-.16-.27-.02-.42.12-.56.12-.12.27-.31.4-.47.13-.16.18-.27.27-.45.09-.18.04-.34-.02-.47-.07-.14-.6-1.44-.82-1.98-.22-.52-.45-.45-.6-.46l-.51-.01c-.18 0-.47.07-.72.34-.25.27-.96.94-.96 2.29s.99 2.66 1.13 2.84c.14.18 1.94 2.96 4.7 4.15.66.29 1.18.46 1.58.59.66.21 1.26.18 1.73.11.53-.08 1.58-.65 1.8-1.28.22-.63.22-1.17.16-1.28-.07-.11-.25-.18-.52-.32z"/>
+    <path fill="currentColor" d="M16.03 3.2c-7.03 0-12.74 5.71-12.74 12.74 0 2.23.58 4.4 1.68 6.31L3.2 28.8l6.72-1.76a12.7 12.7 0 0 0 6.11 1.56h.01c7.03 0 12.75-5.71 12.75-12.74S23.07 3.2 16.03 3.2zm0 23.2h-.01a10.4 10.4 0 0 1-5.31-1.45l-.38-.22-3.99 1.05 1.06-3.89-.25-.4a10.45 10.45 0 1 1 8.88 4.91z"/>
+  </svg>
 </a>
 {% endif %}
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Navbar shadow on scroll
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+</script>
 </body>
 </html>
